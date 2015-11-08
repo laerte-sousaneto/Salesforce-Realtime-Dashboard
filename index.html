@@ -1,0 +1,66 @@
+<html>
+	<head>
+			<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+		<script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+		
+	
+		
+		
+		<script>
+			var app = angular.module('app',[]);	
+		</script>
+		
+		<script src="/controller.js"></script>
+	</head>
+	
+	<body ng-app="app" ng-controller="controller">
+		<div class="container">
+			<small style="position: absolute; top:0; left: 0;">API Usage: {{apiLimitInfo.apiUsage.used}}/{{apiLimitInfo.apiUsage.limit}}</small>
+			
+			<div class="row text-center">				
+				<div class="col-md-12">
+					<h1>Invoice Total: {{getTotalInvoice() | currency}}</h1>
+				</div>
+			</div>
+			
+			<div class="row text-center">
+				<div class="col-xs-4 col-sm-4 col-md-2 thumbnail" ng-click="setStatusFilter('')">
+					<div class="form-group">						
+						<span class="form-control">{{applications.length}}</span>
+						<label style="font-size: 1em;">All</label>
+					</div>
+				</div>
+				<div class="col-xs-4 col-sm-4 col-md-2 thumbnail" 
+					ng-repeat="status in statusList"
+					ng-click="setStatusFilter(status)">
+					<div class="form-group">						
+						<span class="form-control">{{getStatusCount(status)}}</span>
+						<label style="font-size: 1em;">{{status}}</label>
+					</div>
+				</div>
+
+			</div>
+			
+			<div class="row">
+				<div class="col-md-12">
+					
+					<table class="table table-bordered table-striped">
+						<tbody>
+							<tr ng-repeat="app in applications | filter: filterByStatus:strict">
+								<td>{{app.Name}}</td>
+								<td>{{app.Status__c}}</td>
+								<td>{{app.Invoice_Total__c | currency}}</td>
+								<td>{{app.Locked_By__r.Name}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>	
+		</div>
+	</body>
+</html>
