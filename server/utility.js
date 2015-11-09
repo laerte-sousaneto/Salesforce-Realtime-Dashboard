@@ -24,12 +24,11 @@ utility.attachSocket = function(io)
 {
     io.on('connection', function (socket)
     {
-        var globalSocket = socket;
-        globalSocket.emit('apps', applications);
-        globalSocket.emit('apiInfo', apiLimitInfo);
-        globalSocket.emit('StatusChanged', selectedStatus);
+        socket.emit('apps', applications);
+        socket.emit('apiInfo', apiLimitInfo);
+        socket.emit('StatusChanged', selectedStatus);
 
-        globalSocket.on('ChangeStatus', function (data)
+        socket.on('ChangeStatus', function (data)
         {
             selectedStatus = data;
             utility.broadcast('StatusChanged', selectedStatus);
