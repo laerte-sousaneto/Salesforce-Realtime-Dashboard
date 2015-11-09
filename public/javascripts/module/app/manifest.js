@@ -5,7 +5,6 @@
 require.config({
     baseUrl: '/javascripts/',
     paths: {
-        'SocketIO': 'dependency/socket.io-1.3.7',
         'Angular': 'dependency/angular/angular',
         'Jquery': 'dependency/jquery/jquery-2.1.4.min',
         'Bootstrap': 'dependency/bootstrap/js/bootstrap.min',
@@ -14,7 +13,7 @@ require.config({
     shim:{
         'Angular':
         {
-            deps: ['Bootstrap', 'SocketIO']
+            deps: ['Bootstrap']
         },
         'Bootstrap':
         {
