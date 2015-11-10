@@ -1,68 +1,39 @@
-var jsforce = require('jsforce');
-
-var utility = {};
-var socketList = [];
-var apiLimitInfo = null;
+var SFConnection = require('./sfconnection');
+var SocketUtility = require('./socketutility');
 var username = 'lneto@northmillef.com.nmeflneto';
 var password = '@lta86t7v';
-var applications = null;
-var selectedStatus = '';
-var sfConnection = new jsforce.Connection(
-{
-    loginUrl: 'https://test.salesforce.com'
-});
+var loginUrl = 'https://test.salesforce.com';
 
-
-sfConnection.login(username, password, function (err, userInfo)
-{
-    if (err) { return console.error(err); }
-
-    setInterval(utility.doQuery, 1000);
-});
-
-utility.attachSocket = function(io)
-{
-    io.on('connection', function (socket)
-    {
-        socket.emit('apps', applications);
-        socket.emit('apiInfo', apiLimitInfo);
-        socket.emit('StatusChanged', selectedStatus);
-
-        socket.on('ChangeStatus', function (data)
-        {
-            selectedStatus = data;
-            utility.broadcast('StatusChanged', selectedStatus);
-            console.log('Status Changed to', selectedStatus);
-        });
-
-        socketList.push(socket);
-        console.log(socket.conn.remoteAddress);
-    });
-};
-
+var utility = {};
 utility.doQuery = function()
 {
     var query = "SELECT Id, Name, Status__c, Invoice_Total__c, Locked_By__r.Name FROM Application__c";
 
-    sfConnection.query(query, function(err, result)
+    SFConnection.connection.query(query, function(err, result)
     {
         if (err) { return console.error(err); }
-        totalApplications = result.totalSize;
-        apiLimitInfo = sfConnection.limitInfo;
-
-        applications = result.records;
-
-        utility.broadcast('apps', applications);
-        utility.broadcast('apiInfo', apiLimitInfo);
+        SocketUtility.setApplications(result.records);
+        SocketUtility.setApiLimitInfo(SFConnection.connection.limitInfo);
     });
 };
 
-utility.broadcast = function(message, data)
+utility.attachSocket = function(io)
 {
-    for(x in socketList)
-    {
-        socketList[x].emit(message, data);
-    }
+    SocketUtility.attachSocket(io);
 };
+
+SFConnection.establishConnection(username, password, loginUrl, function(err, userInfo)
+{
+    utility.doQuery();
+    if(SocketUtility.globalMetadata == null)
+    {
+        SFConnection.getSObjectsMetadata(function(err, metadata)
+        {
+            SocketUtility.setGlobalMetadata(metadata);
+        });
+    }
+
+});
+
 
 module.exports = utility;

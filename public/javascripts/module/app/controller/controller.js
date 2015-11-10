@@ -7,6 +7,7 @@ define([], function()
 		$scope.apiLimitInfo = {};
 		$scope.applications = [];
 		$scope.selectedStatus = '';
+		$scope.metadata = [];
 		$scope.statusList = [
 			'New',
 			'Submitted',

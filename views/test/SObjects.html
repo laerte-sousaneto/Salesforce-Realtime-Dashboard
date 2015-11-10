@@ -1,0 +1,33 @@
+<html>
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="../javascripts/dependency/bootstrap/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="../javascripts/dependency/bootstrap/css/bootstrap-theme.min.css">
+
+    <!-- Libs -->
+    <script src="../javascripts/dependency/socket.io-1.3.7.min.js"></script>
+    <script src="../javascripts/dependency/require.js"
+            data-main="../javascripts/module/app/manifest.js"></script>
+    <!-- Libs -->
+</head>
+
+<body ng-controller="sobjectController">
+<div class="container">
+    <small style="position: absolute; top:0; left: 0;">API Usage: {{apiLimitInfo.apiUsage.used}}/{{apiLimitInfo.apiUsage.limit}}</small>
+    <br />
+    <div class="thumbnail">
+        <div class="row">
+            <div class="col-md-3" ng-repeat = "sObject in metadata.sobjects">
+                <div class="well">
+                    {{sObject.label | limitTo:25}}
+                    <span ng-show="sObject.label.length >= 25">...</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
