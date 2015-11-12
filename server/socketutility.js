@@ -20,7 +20,7 @@ utility.attachSocket = function(io)
 
         socket.on('ChangeStatus', function (data)
         {
-            selectedStatus = data;
+            utility.selectedStatus = data;
             utility.broadcast('StatusChanged', utility.selectedStatus);
             console.log('Status Changed to', utility.selectedStatus);
         });
