@@ -17,12 +17,35 @@
 <div class="container">
     <small style="position: absolute; top:0; left: 0;">API Usage: {{apiLimitInfo.apiUsage.used}}/{{apiLimitInfo.apiUsage.limit}}</small>
     <br />
-    <div class="thumbnail">
+    <div class="thumbnail" ng-hide="sObjectMetadata != null">
         <div class="row">
-            <div class="col-md-3" ng-repeat = "sObject in metadata.sobjects">
-                <div class="well">
+            <div class="col-md-3" ng-repeat = "sObject in metadata.sobjects | filter: filterObjects">
+                <div class="well" ng-click="selectObject(sObject.name);">
                     {{sObject.label | limitTo:25}}
                     <span ng-show="sObject.label.length >= 25">...</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="thumbnail" ng-show="sObjectMetadata != null">
+        <div class="row text-center">
+            <div class="col-md-1">
+                <span class="pull-left glyphicon glyphicon-arrow-left"
+                      ng-click="exitSObjectMetadata();"
+                      style="cursor: pointer;"></span>
+            </div>
+            <div class="col-md-10 text-center">
+                <h1>{{sObjectMetadata.name}}</h1>
+            </div>
+        </div>
+        <div class="row text-center">
+
+            <div class="col-md-3" ng-repeat = "field in sObjectMetadata.fields">
+                <div class="well">
+                    {{field.name | limitTo:25}}
+                    <span ng-show="field.name.length >= 25">...</span>
                 </div>
 
             </div>

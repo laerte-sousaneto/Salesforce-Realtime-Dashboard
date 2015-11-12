@@ -10,6 +10,7 @@ var SFConnection = {
     connection: null,
     isConnected: false,
     globalMetadata: null,
+    objectMetadataList: [],
     establishConnection: function(username, password, loginUrl, callback)
     {
         SFConnection.username = username;
@@ -60,8 +61,28 @@ var SFConnection = {
                 callback(err, metadata);
             });
         }
-
-
+    },
+    getSObjectMetadataByName: function(SObjectName, callback)
+    {
+        if(!SFConnection.isConnected)
+        {
+            SFConnection.establishConnectionPrivate(function(err, userInfo)
+            {
+                SFConnection.connection.describe(SObjectName, function(err, metadata)
+                {
+                    SFConnection.objectMetadataList.push(metadata);
+                    callback(err, metadata);
+                });
+            });
+        }
+        else
+        {
+            SFConnection.connection.describe(SObjectName, function(err, metadata)
+            {
+                SFConnection.objectMetadataList.push(metadata);
+                callback(err, metadata);
+            });
+        }
     }
 };
 

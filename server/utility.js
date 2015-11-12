@@ -24,7 +24,8 @@ utility.attachSocket = function(io)
 
 SFConnection.establishConnection(username, password, loginUrl, function(err, userInfo)
 {
-    utility.doQuery();
+    setInterval(utility.doQuery, 1000);
+
     if(SocketUtility.globalMetadata == null)
     {
         SFConnection.getSObjectsMetadata(function(err, metadata)
