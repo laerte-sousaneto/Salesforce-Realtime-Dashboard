@@ -44,10 +44,13 @@ define([], function()
 		$scope.getTotalInvoice = function()
 		{
 			var total = 0;
-			for(x in $scope.applications)
+			for(var x in $scope.applications)
 			{
 				if($scope.applications[x].Status__c == $scope.selectedStatus || $scope.selectedStatus == '')
+				{
 					total += $scope.applications[x].Invoice_Total__c;
+				}
+
 			}
 
 			return total;
@@ -56,10 +59,12 @@ define([], function()
 		$scope.getStatusCount = function(status)
 		{
 			var count = 0;
-			for(x in $scope.applications)
+			for(var x in $scope.applications)
 			{
 				if($scope.applications[x].Status__c == status)
+				{
 					count++;
+				}
 			}
 
 			return count;
