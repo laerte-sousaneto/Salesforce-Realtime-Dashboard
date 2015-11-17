@@ -47,7 +47,7 @@ define([], function()
             $http(
             {
                 method: 'GET',
-                url: '/sobject?Name=' + name
+                url: '/api/sobject/' + name
             }).then(function successCallback(response)
             {
                 onSuccess(response);

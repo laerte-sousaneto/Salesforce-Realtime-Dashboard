@@ -30,6 +30,26 @@ app.get('/sobject',function(req,res){
 
 });
 
+// http://localhost:8080/api/users/chris
+app.get('/api/sobject/:objectName', function(req, res)
+{
+    var sobjectName = req.params.objectName;
+    var username = 'lneto@northmillef.com.nmeflneto';
+    var password = '@lta86t7v';
+    var loginUrl = 'https://test.salesforce.com';
+
+    console.log(sobjectName);
+    SFConnection.establishConnection(username, password, loginUrl, function(err, userInfo)
+    {
+        SFConnection.getSObjectMetadataByName(sobjectName, function(err, metadata)
+        {
+            if(err) res.send(err);
+            else   res.send(metadata);
+        });
+    });
+
+});
+
 
 
 module.exports = app;
