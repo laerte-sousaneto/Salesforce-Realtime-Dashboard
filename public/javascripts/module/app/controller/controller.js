@@ -1,27 +1,30 @@
 define([], function()
 {
-	var controller = function($scope)
+	var controller = function($scope, FilterUtility)
 	{
 		var socket = io('http://192.168.0.106');
-		$scope.data = {};
+
 		$scope.apiLimitInfo = {};
 		$scope.applications = [];
 		$scope.selectedStatus = '';
 		$scope.metadata = [];
-		$scope.statusList = [
-			'New',
+		$scope.filterDefinitionList = [];
+		$scope.selectedFilterDefinition = null;
+		$scope.statusList =
+		[
 			'Submitted',
 			'Asset Review',
 			'Credit Review',
-			'Dealmaker'
+			'DealMaker'
 		];
 
-		socket.on('news', function (data)
+		for(var statusIndex in $scope.statusList)
 		{
-			$scope.data = data;
-			$scope.$apply();
-		});
-
+			var status = $scope.statusList[statusIndex];
+			var fieldName = 'Status__c';
+			$scope.filterDefinitionList.push(FilterUtility.generateFilter(status, fieldName, status, 'equals'));
+		}
+		
 		socket.on('apiInfo', function(data)
 		{
 			$scope.apiLimitInfo = data;
@@ -36,8 +39,7 @@ define([], function()
 
 		socket.on('StatusChanged', function(data)
 		{
-			$scope.selectedStatus = data;
-			console.log('Status changed to', data);
+			$scope.selectedFilterDefinition = data;
 			$scope.$apply();
 		});
 
@@ -46,46 +48,34 @@ define([], function()
 			var total = 0;
 			for(var x in $scope.applications)
 			{
-				if($scope.applications[x].Status__c == $scope.selectedStatus || $scope.selectedStatus == '')
+				if($scope.isMatch($scope.applications[x]))
 				{
 					total += $scope.applications[x].Invoice_Total__c;
 				}
-
 			}
 
 			return total;
 		};
 
-		$scope.getStatusCount = function(status)
+		$scope.setFilterDefinition = function(filterDefinition)
 		{
-			var count = 0;
-			for(var x in $scope.applications)
-			{
-				if($scope.applications[x].Status__c == status)
-				{
-					count++;
-				}
-			}
-
-			return count;
+			$scope.selectedFilterDefinition = filterDefinition;
+			socket.emit('ChangeStatus', $scope.selectedFilterDefinition);
 		};
 
-		$scope.setStatusFilter = function(status)
+		$scope.isMatch = function(item)
 		{
-			$scope.selectedStatus = status;
-			socket.emit('ChangeStatus', $scope.selectedStatus);
-		};
+			var isMatch = true;
+			if($scope.selectedFilterDefinition == null) return isMatch;
+			isMatch = FilterUtility.isMatch(item, $scope.selectedFilterDefinition.filters, $scope.selectedFilterDefinition.criteria);
 
-		$scope.filterByStatus = function(element)
-		{
-			if($scope.selectedStatus == '') return true;
-			return element.Status__c == $scope.selectedStatus;
+			return isMatch;
 		};
 
 
 	};
 
-	controller.$inject = ['$scope'];
+	controller.$inject = ['$scope', 'FilterUtility'];
 
 	return controller;
 });

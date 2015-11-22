@@ -22,23 +22,16 @@
 					<h1>Invoice Total: {{getTotalInvoice() | currency}}</h1>
 				</div>
 			</div>
-			
-			<div class="row text-center">
-				<div class="col-xs-4 col-sm-4 col-md-2 thumbnail" ng-click="setStatusFilter('')">
-					<div class="form-group">						
-						<span class="form-control">{{applications.length}}</span>
-						<label style="font-size: 1em;">All</label>
-					</div>
-				</div>
-				<div class="col-xs-4 col-sm-4 col-md-2 thumbnail" 
-					ng-repeat="status in statusList"
-					ng-click="setStatusFilter(status)">
-					<div class="form-group">						
-						<span class="form-control">{{getStatusCount(status)}}</span>
-						<label style="font-size: 1em;">{{status}}</label>
-					</div>
-				</div>
 
+			<div class="row text-center">
+				<div class="col-xs-4 col-sm-4 col-md-2" ng-repeat="filterDefinition in filterDefinitionList track by $index">
+					<status-item datasource="applications"
+								 filters="filterDefinition.filters"
+								 title="filterDefinition.title"
+								 criteria="filterDefinition.criteria"
+								 on-click="setFilterDefinition(filterDefinition);">
+					</status-item>
+				</div>
 			</div>
 			
 			<div class="row">
@@ -46,7 +39,7 @@
 					
 					<table class="table table-bordered table-striped">
 						<tbody>
-							<tr ng-repeat="app in applications | filter: filterByStatus:strict">
+							<tr ng-repeat="app in applications | filter: isMatch:strict">
 								<td>{{app.Name}}</td>
 								<td>{{app.Status__c}}</td>
 								<td>{{app.Invoice_Total__c | currency}}</td>
