@@ -6,6 +6,7 @@ define(
         'module/app/controller/controller',
         'module/app/controller/sobjectController',
         'module/app/directive/StatusItem',
+        'module/app/directive/FilterSelection',
         'module/app/utility/FilterUtility'
     ],
     function
@@ -13,6 +14,7 @@ define(
         controller,
         sobjectController,
         StatusItem,
+        FilterSelection,
         FilterUtility
     )
 {
@@ -21,6 +23,7 @@ define(
     app.factory('FilterUtility', FilterUtility);
 
     app.directive('statusItem', StatusItem);
+    app.directive('filterSelection', FilterSelection);
 
     app.controller('controller', controller);
     app.controller('sobjectController', sobjectController);

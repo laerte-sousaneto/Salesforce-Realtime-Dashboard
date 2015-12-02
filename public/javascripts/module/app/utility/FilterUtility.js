@@ -51,10 +51,21 @@ define([], function()
             return isMatch;
         };
 
+        utility.generateFilterContainer = function(sObjectName, title, description)
+        {
+            return {
+                sObjectName: sObjectName,
+                title: title,
+                description: description,
+                criteria: 'All',
+                filters: []
+            };
+        };
+
         utility.generateFilter = function(title, fieldName, value, condition)
         {
-            var filter =
-            {
+            return {
+                sObjectName: null,
                 title: title,
                 description: '',
                 criteria: 'All',
@@ -66,9 +77,7 @@ define([], function()
                             condition: condition
                         }
                     ]
-            }
-
-            return filter;
+            };
         };
 
         return utility;

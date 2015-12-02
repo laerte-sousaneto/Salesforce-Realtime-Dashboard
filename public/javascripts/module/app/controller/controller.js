@@ -2,7 +2,7 @@ define([], function()
 {
 	var controller = function($scope, FilterUtility)
 	{
-		var socket = io('http://192.168.0.106');
+		var socket = io('http://192.168.0.103');
 
 		$scope.apiLimitInfo = {};
 		$scope.applications = [];
@@ -15,7 +15,11 @@ define([], function()
 			'Submitted',
 			'Asset Review',
 			'Credit Review',
-			'DealMaker'
+			'Credit Adjudication',
+			'DealMaker',
+			'Documnet Check In',
+			'Funding',
+			'Funded'
 		];
 
 		for(var statusIndex in $scope.statusList)
@@ -24,7 +28,7 @@ define([], function()
 			var fieldName = 'Status__c';
 			$scope.filterDefinitionList.push(FilterUtility.generateFilter(status, fieldName, status, 'equals'));
 		}
-		
+
 		socket.on('apiInfo', function(data)
 		{
 			$scope.apiLimitInfo = data;

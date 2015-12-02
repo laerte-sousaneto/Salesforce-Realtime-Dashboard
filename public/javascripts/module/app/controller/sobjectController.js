@@ -2,7 +2,7 @@ define([], function()
 {
     var controller = function($scope,$http)
     {
-        var socket = io('http://192.168.0.106');
+        var socket = io('http://192.168.0.103');
         $scope.apiLimitInfo = {};
         $scope.metadata = [];
         $scope.sObjectMetadata = null;

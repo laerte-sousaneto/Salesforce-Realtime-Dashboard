@@ -36,19 +36,11 @@
                       ng-click="exitSObjectMetadata();"
                       style="cursor: pointer;"></span>
             </div>
-            <div class="col-md-10 text-center">
-                <h1>{{sObjectMetadata.name}}</h1>
-            </div>
         </div>
+
         <div class="row text-center">
-
-            <div class="col-md-3" ng-repeat = "field in sObjectMetadata.fields">
-                <div class="well">
-                    {{field.name | limitTo:25}}
-                    <span ng-show="field.name.length >= 25">...</span>
-                </div>
-
-            </div>
+            <filter-selection sobject="sObjectMetadata"
+                              nf-if="sObjectMetadata !== undefined"></filter-selection>
         </div>
     </div>
 </div>
