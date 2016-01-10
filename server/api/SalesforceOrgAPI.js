@@ -1,7 +1,7 @@
 /**
  * Created by sousa on 11/17/2015.
  */
-var SFConnection = require('../sfconnection.js');
+var SFConnection = require('../SFConnection.js');
 
 module.exports = function(expressApp)
 {
