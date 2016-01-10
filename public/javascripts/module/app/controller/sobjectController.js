@@ -2,7 +2,8 @@ define([], function()
 {
     var controller = function($scope,$http)
     {
-        var socket = io('http://192.168.0.103');
+        var socket = io('https://lneto.herokuapp.com/');
+        //var socket = io('http://localhost');
         $scope.apiLimitInfo = {};
         $scope.metadata = [];
         $scope.sObjectMetadata = null;
