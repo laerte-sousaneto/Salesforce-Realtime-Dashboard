@@ -1,4 +1,4 @@
-var SFConnection = require('./sfconnection');
+var SFConnection = require('./SFConnection');
 var SocketUtility = require('./socketutility');
 var username = 'lneto@northmillef.com.nmeflneto';
 var password = '@lta86t7v';
