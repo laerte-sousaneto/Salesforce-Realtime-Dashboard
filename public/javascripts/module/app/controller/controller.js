@@ -2,7 +2,7 @@ define([], function()
 {
 	var controller = function($scope, FilterUtility)
 	{
-		var socket = io('http://192.168.0.103');
+		var socket = io('https://lneto.herokuapp.com/');
 
 		$scope.apiLimitInfo = {};
 		$scope.applications = [];
