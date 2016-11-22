@@ -9,10 +9,12 @@ module.exports = function(expressApp)
     expressApp.get('/api/sobject/:objectName', function(req, res)
     {
         var sobjectName = req.params.objectName;
-        var username = 'lneto@northmillef.com.nmeflneto';
-        var password = '@lta86t7v';
-        var loginUrl = 'https://test.salesforce.com';
+        var username = process.env.SF_USERNAME;
+        var password = process.env.SF_PASSWORD;
+        var loginUrl = process.env.SF_URL;
 
+
+        console.log('here');
         SFConnection.establishConnection(username, password, loginUrl, function(err, userInfo)
         {
             SFConnection.getSObjectMetadataByName(sobjectName, function(err, metadata)
@@ -25,4 +27,4 @@ module.exports = function(expressApp)
     });
 
     return api;
-}
+};

@@ -1,8 +1,10 @@
 var SFConnection = require('./SFConnection');
 var SocketUtility = require('./socketutility');
-var username = 'lneto@northmillef.com.nmeflneto';
-var password = '@lta86t7v';
-var loginUrl = 'https://test.salesforce.com';
+var username = process.env.SF_USERNAME;
+var password = process.env.SF_PASSWORD;
+var loginUrl = process.env.SF_URL;
+
+// console.log(process.env);
 
 var utility = {};
 utility.doQuery = function()
@@ -24,6 +26,7 @@ utility.attachSocket = function(io)
 
 SFConnection.establishConnection(username, password, loginUrl, function(err, userInfo)
 {
+
     setInterval(utility.doQuery, 1000);
 
     if(SocketUtility.globalMetadata == null)
