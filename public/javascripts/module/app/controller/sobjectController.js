@@ -2,12 +2,13 @@ define([], function()
 {
     var controller = function($scope,$http)
     {
-        var socket = io('https://lneto.herokuapp.com/');
+        var socket = io(window.location.origin);
         //var socket = io('http://localhost');
         $scope.apiLimitInfo = {};
         $scope.metadata = [];
         $scope.sObjectMetadata = null;
 
+        console.log(socket);
         socket.on('GlobalMetadata', function(data)
         {
             $scope.metadata = data;
@@ -24,7 +25,6 @@ define([], function()
         $scope.filterObjects = function(object)
         {
             if(object.createable && object.custom) return true;
-
             return false;
         };
 
